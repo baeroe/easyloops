@@ -40,10 +40,22 @@ const createUser = async (req, res) => {
     }
 }
 
+const deleteUser = (req, res) => {
+    User.findByIdAndDelete(req.user.id,{useFindAndModify: false}, (err, user) => {
+        if (err) return res.status(500).send(err)
 
-const readUser = async (req, res) => {
+        if (user === null) return res.status(404).send()
+
+        res.status(200).send(user.username + ' deleted')
+    })
+}
+
+
+const readUser = (req, res) => {
     User.findById(req.user.id, (err, user) => {
-        if (err) return res.send(err)
+        if (err) return res.status(500).send(err)
+
+        if (user === null) return res.status(404).send()
 
         return res.json({username: user.username, email: user.email, loops: user.loops})
     })
@@ -68,5 +80,6 @@ const validate = (method) => {
 module.exports = {
     createUser: createUser,
     readUser: readUser,
-    validate: validate
+    validate: validate,
+    deleteUser: deleteUser
 }

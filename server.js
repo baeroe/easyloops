@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 // load routes
 const userRoutes = require('./routes/user-routes')
 const authRoutes = require('./routes/auth-routes')
+const loopRoutes = require('./routes/loop-routes')
 
 // start express app
 const app = express()
@@ -32,6 +33,7 @@ app.use(cors())
 // set routes
 app.use('/api', userRoutes)
 app.use('/api', authRoutes)
+app.use('/api', loopRoutes)
 
 
 app.listen(PORT, () => {
