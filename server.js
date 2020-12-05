@@ -35,6 +35,10 @@ app.use('/api', userRoutes)
 app.use('/api', authRoutes)
 app.use('/api', loopRoutes)
 
+// test route
+app.get('/api/test', (req, res) => {
+    res.send('success')
+})
 
 app.listen(PORT, () => {
     console.log('listening to port ' + PORT)
