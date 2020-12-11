@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
             }  else {
 
                 // if not, create new one
-                const user = new User({username: username, email: email, password: hashedPassword});
+                const user = new User({username: username, email: email, password: hashedPassword, confirmed: false});
                 user.save().then(console.log(`user ${username} created`));
                 return res.status(201).send();
             }
@@ -41,7 +41,9 @@ const createUser = async (req, res) => {
 }
 
 const deleteUser = (req, res) => {
+    console.log('hallo')
     User.findByIdAndDelete(req.user.id,{useFindAndModify: false}, (err, user) => {
+        console.log(user)
         if (err) return res.status(500).send(err)
 
         if (user === null) return res.status(404).send()

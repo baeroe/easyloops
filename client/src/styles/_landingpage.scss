@@ -1,0 +1,21 @@
+.bg-landingpage {
+    background-image: url('./../assets/bg-landingpage.jpg');
+    height: 800px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+
+.bg-landingpage-darker {
+    background-image: url('./../assets/bg-landingpage-darker.jpg');
+    height: 800px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+
+.w-80 {
+    width: 20rem;
+}

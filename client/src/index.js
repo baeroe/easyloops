@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
-import App from './App'
 import './styles/main'
+import ProviderComponent from './ProviderComponent'
 
 ReactDOM.render(
-    <App/>,
+    <ProviderComponent/>,
     document.getElementById('root')
 )

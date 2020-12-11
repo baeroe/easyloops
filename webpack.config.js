@@ -25,7 +25,7 @@ module.exports = {
                 ] 
             },
             {
-                test: /\.wav/,
+                test: /\.(png|jpe?g|gif|wav)$/i,
                 loader: 'file-loader'
             },
             {
@@ -57,6 +57,8 @@ module.exports = {
     ],
     devServer: {
         contentBase: './client/dist',
+        historyApiFallback: true,
+        hot: true,
         proxy: {
             '/api': 'http://localhost:3000'
         }

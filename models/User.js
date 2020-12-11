@@ -22,6 +22,7 @@ LoopSchema = new Schema({
 UserSchema = new Schema({
     username: String,
     email: String,
+    confirmed: Boolean,
     password: String,
     loops: [LoopSchema]
 })

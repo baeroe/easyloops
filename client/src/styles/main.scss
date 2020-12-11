@@ -2,3 +2,38 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+@import './landingpage';
+
+$easyloops_blue: #4E7EFF;
+$easyloops_red: #FF5858;
+
+//general styles
+* {
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.bg-easyloops-blue {
+    background: $easyloops_blue;
+}
+
+.text-easyloops-blue {
+    color: $easyloops_blue;
+}
+
+.bg-easyloops-red {
+    background: $easyloops_red;
+}
+
+.text-easyloops-red {
+    color: $easyloops_red;
+}
+
+.h-fit-content {
+    height: fit-content;
+}
