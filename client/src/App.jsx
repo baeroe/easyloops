@@ -15,8 +15,8 @@ import Signup from './components/Signup'
 import Account from './components/Account'
 import DeleteAccount from './components/DeleteAccount'
 import ConfirmEmail from './components/ConfirmEmail'
-import { UserContext } from './context/UserContext'
 import Looper from './components/looper-components/Looper'
+import { UserContext } from './context/UserContext'
 import { LooperContext } from './context/LooperContext'
 
 
@@ -88,7 +88,7 @@ export default function App() {
 
     return (
         <Router>
-            <div>
+            <div className="min-h-full w-full">
                 {
                     !active
                     ?
@@ -136,17 +136,11 @@ export default function App() {
                                     </Link>
                                 }
 
-                                {
-                                    user
-                                    ?
-                                    <Link to="/looper">
-                                        <li className=" text-white bg-easyloops-blue rounded px-4 py-2 ml-5">
-                                            Looper
-                                        </li>
-                                    </Link>
-                                    :
-                                    null
-                                }
+                                <Link to="/looper">
+                                    <li className=" text-white bg-easyloops-blue rounded px-4 py-2 ml-5">
+                                        Looper
+                                    </li>
+                                </Link>
 
                             </ul>
                         </div>
