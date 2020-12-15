@@ -31,7 +31,7 @@ export default function SideMenu({user}) {
 
     return (
 
-        <div className="fixed top-0 h-full w-full flex flex-row pointer-events-none">
+        <div className="fixed top-0 h-full w-full flex flex-row pointer-events-none z-30">
 
             <div className={`h-full ${ sidebar ? 'w-64' : 'w-14 cursor-pointer' } bg-gray-elements shadow-sidemenu pointer-events-auto flex flex-col items-center`}
                 onClick={handleSideBar}>

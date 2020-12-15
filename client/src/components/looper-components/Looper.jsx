@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import ControllBar from './ControllBar'
 import SideMenu from './SideMenu'
+import TrackContainer from './TrackContainer'
 
 export default function Looper() {
 
@@ -60,6 +61,8 @@ export default function Looper() {
         <div className="w-full h-full">
             <ControllBar user={user} />
             <SideMenu user={user} />
+            <TrackContainer />
+
         </div>
     )
 }

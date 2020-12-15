@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ControllBar({user}) {
     return (
-        <div className="w-full h-14 bg-gray-surface fixed top-0 shadow-controllbar flex flex-row justify-center items-center">
+        <div className="w-full h-14 bg-gray-surface fixed top-0 shadow-controllbar flex flex-row justify-center items-center z-20">
             
             {/* metronom lights container */}
             <div id="metronom-dots" className="h-full flex flex-row items-center mr-5">

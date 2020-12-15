@@ -1,0 +1,104 @@
+@import './variables';
+
+.rec-button {
+    border-radius: 9999px;
+    width: 7.5rem;
+    height: 7.5rem;
+    background: rgb(190,190,190);
+    background: radial-gradient(circle, rgba(190,190,190,1) 0%, rgba(126,126,126,1) 100%);
+    -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.33); 
+    box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.33);
+}
+
+.rec-icon {
+    border-radius: 9999px;
+    width: 3rem;
+    height: 3rem;
+    background: $easyloops_red;
+}
+
+.light-ring {
+    border-radius: 9999px;
+    width: 8rem;
+    height: 8rem;
+    background-color: $easyloops_red;
+    -webkit-box-shadow: 0px 0px 15px 4px $easyloops-red; 
+    box-shadow: 0px 0px 15px 4px $easyloops_red;
+}
+
+#rec-container {
+  width: 10rem;
+  height: 10rem;
+  position: relative;
+}
+.hold {
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  clip-path: inset(0px 0px 0rem 5rem);
+  border-radius: 100%;
+  background-color: $gray_surface;
+}
+
+.fill {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 10rem;
+  clip-path: inset(0rem 5rem 0px 0px);
+}
+.left .fill {
+  z-index: 1;
+  -webkit-animation: left 1s linear;
+  -moz-animation: left 1s linear;
+  animation: left 1s linear both;
+}
+@keyframes left {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+@-webkit-keyframes left {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(180deg);
+  }
+}
+.right {
+  z-index: 3;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.right .fill {
+  z-index: 3;
+  -webkit-animation: right 1s linear;
+  -moz-animation: right 1s linear;
+  animation: right 1s linear both;
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+}
+@keyframes right {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+@-webkit-keyframes right {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
