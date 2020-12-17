@@ -1,6 +1,6 @@
 .knob-shadow {
-    -webkit-box-shadow: 0px 4px 5px 2px rgba(0,0,0,0.25); 
-    box-shadow: 0px 4px 5px 2px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25); 
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.25);
 }
 
 .knob {
@@ -14,4 +14,28 @@
         height: 5px;
         background: white;
     }
+}
+
+.left-dot{
+    top: calc(100% - 3px);
+    left: 6px;
+    width: 3px;
+    height: 5px;
+    -moz-transform:rotate(35deg); 
+    -webkit-transform:rotate(35deg); 
+    -o-transform:rotate(35deg); 
+    -ms-transform:rotate(35deg);
+    transform:rotate(35deg);   
+}
+
+.right-dot{
+    top: calc(100% - 3px);
+    left: calc(100% - 9px);
+    width: 3px;
+    height: 5px;
+    -moz-transform:rotate(-35deg); 
+    -webkit-transform:rotate(-35deg); 
+    -o-transform:rotate(-35deg); 
+    -ms-transform:rotate(-35deg);
+    transform:rotate(-35deg);   
 }

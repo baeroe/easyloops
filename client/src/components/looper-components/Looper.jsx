@@ -11,7 +11,9 @@ export default function Looper() {
 
     // get context data
     const {
-        setActive
+        setLooperEntered,
+        loop,
+        dispatch
     } = useContext(LooperContext)
     
     const {
@@ -22,12 +24,13 @@ export default function Looper() {
 
     // set the active looper state true, so that the nav bar hides
     useEffect(() => {
-        setActive(true)
+        setLooperEntered(true)
         return () => {
-            setActive(false)
+            setLooperEntered(false)
         }
     }, [])
 
+    // loads userdata if user is logged in
     useEffect(() => {
         if (token) {
 
@@ -57,12 +60,15 @@ export default function Looper() {
 
     }, [token])
 
+    useEffect(() => {
+        dispatch({type: 'CREATE_LOOP'})
+    }, [])
+
     return (
         <div className="w-full h-full">
             <ControllBar user={user} />
             <SideMenu user={user} />
             <TrackContainer />
-
         </div>
     )
 }

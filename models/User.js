@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 TrackSchema = new Schema({
     trackname: String,
     bars: Number,
-    audioBlobURL: String,
+    audioBlob: Buffer,
     treble: Number,
     middle: Number,
     bass: Number,

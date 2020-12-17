@@ -22,6 +22,10 @@ import { LooperContext } from './context/LooperContext'
 
 export default function App() {
 
+    ///////////////////////////////////
+    /// variables /////////////////////
+    ///////////////////////////////////
+
     // get states form context
     const {
         token,
@@ -29,11 +33,26 @@ export default function App() {
     } = useContext(UserContext)
 
     const {
-        active,
-        setActive
+        looperEntered,
+        setLooperEntered
     } = useContext(LooperContext)
 
     const [user, setUser] = useState(null)
+
+
+    ///////////////////////////////////
+    /// effects ///////////////////////
+    ///////////////////////////////////
+
+    // make page unscrollable when the looper is entered
+    useEffect(() => {
+        if (looperEntered) {
+            document.getElementsByTagName('HTML')[0].classList.add('overflow-hidden')
+        } else {
+            document.getElementsByTagName('HTML')[0].classList.remove('overflow-hidden')
+        }
+    }, [looperEntered])
+
 
     // effect that makes the nav bar transparent when at top and grey if the user scrolls down
     useEffect(() => {
@@ -82,6 +101,10 @@ export default function App() {
     }, [token])
 
 
+    ///////////////////////////////////
+    /// handler ///////////////////////
+    ///////////////////////////////////
+
     const handleLogout = () => {
         setToken(null)
     }
@@ -90,7 +113,7 @@ export default function App() {
         <Router>
             <div className="min-h-full w-full">
                 {
-                    !active
+                    !looperEntered
                     ?
                     <nav id="navbar" className="grid grid-cols-12 gap-4 h-16 w-full fixed transition-all duration-500">
                         <div className="col-start-2 col-span-3 text-white">easyloops</div>
