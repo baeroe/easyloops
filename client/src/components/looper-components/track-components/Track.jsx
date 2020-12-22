@@ -203,7 +203,7 @@ export default function Track({track}) {
 
             <TitleSection track={track} />
 
-            <LengthSection track={track} />
+            <LengthSection track={track} startTime={startTime} />
             
             <RecordSection 
                 track={track} 

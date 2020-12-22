@@ -1,7 +1,10 @@
 import React, {useContext, useEffect, useRef} from 'react'
 import { LooperContext } from '../../../context/LooperContext'
 
-export default function LengthSection({track}) {
+export default function LengthSection({track, startTime}) {
+
+    const MAX_LENGTH = 16
+    const MIN_LENGTH = 1
 
     var lengthElement = useRef(null)
 
@@ -14,7 +17,8 @@ export default function LengthSection({track}) {
     }, [])
 
     const handleTimesTwo = () => {
-        if (lengthElement.current.innerHTML < 16) {
+        // if maximum is not reached and starttime is unset
+        if (lengthElement.current.innerHTML < MAX_LENGTH && startTime == -1) {
             lengthElement.current.innerHTML = lengthElement.current.innerHTML * 2
             track.numberOfBars = parseInt(lengthElement.current.innerHTML)
             dispatch({type: 'UPDATE_TRACK', track: track})
@@ -22,7 +26,8 @@ export default function LengthSection({track}) {
     }
 
     const handleDevideTwo = () => {
-        if (lengthElement.current.innerHTML > 1) {
+        // if minimum is not reached and starttime is unset
+        if (lengthElement.current.innerHTML > MIN_LENGTH && startTime == -1) {
             lengthElement.current.innerHTML = lengthElement.current.innerHTML / 2
             track.numberOfBars = parseInt(lengthElement.current.innerHTML)
             dispatch({type: 'UPDATE_TRACK', track: track})

@@ -9,8 +9,8 @@ export default function Home() {
                         Create audio loops easy and intuitive
                     </div>
                     <div className="col-start-2 text-white text-xl col-span-8">
-                        Record audio loops. Prototype your song. Download the audio files. <br/>
-                        All this and more for free!
+                        Be a one-man-band and create music for you and your friends. <br/>
+                        100 percent free                 
                     </div>
                 </div>
                 <div className="flex justify-center mt-40">
@@ -20,7 +20,11 @@ export default function Home() {
                     <span className="text-white">Learn more</span>
                 </div>
                 <div className="flex justify-center mt-4">
-                    <span className="text-white text-2xl">v</span>
+                    <span className="text-white text-2xl">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
                 </div>
             </div>
 
