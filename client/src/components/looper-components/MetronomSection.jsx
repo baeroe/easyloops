@@ -26,7 +26,7 @@ export default function MetronomSection() {
     
     const [playerTick, setPlayerTick] = useState(new Player(Tick))
     const [playerTack, setPlayerTack] = useState(new Player(Tack))
-    const [metronomVolume, setMetronomVolume] = useState(new Volume())
+    const [metronomVolume, setMetronomVolume] = useState(new Volume(-20))
     const [metronomEnabled, setMetronomEnabled] = useState(false)
 
     playerTick.connect(metronomVolume)
@@ -38,6 +38,7 @@ export default function MetronomSection() {
         if ( Math.abs( getCurrentTime() - getCurrentTactStartTime() ) < 0.1 ) {
             lights[3].classList.remove('active-metronom-light')
             lights[0].classList.add('active-metronom-light')
+            // console.log('current tact' + getCurrentTactStartTime())
             playerTick.start(time)
 
         }
@@ -127,10 +128,6 @@ export default function MetronomSection() {
 
     const getCurrentTime = () => {
         return Transport.getSecondsAtTime(Transport.now())
-    }
-
-    const getNextTactStartTime = () => {
-        return (Math.floor(Transport.getSecondsAtTime(Transport.now()) / TransportTime('1m')) + 1) * TransportTime('1m')
     }
 
 

@@ -13,7 +13,8 @@ export default function Looper() {
     const {
         setLooperEntered,
         loop,
-        dispatch
+        dispatch,
+
     } = useContext(LooperContext)
     
     const {

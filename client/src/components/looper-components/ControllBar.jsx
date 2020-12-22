@@ -32,14 +32,16 @@ export default function ControllBar({user}) {
     /// handler ///////////////////////
     ///////////////////////////////////
     const handlePlay = () => {
-        setRunning(true)
         Transport.start()
+        setRunning(true)
+
     }
 
     const handleStop = () => {
-        setRunning(false)
         Transport.stop()
         Transport.cancel(0.1)
+        setRunning(false)
+
     }
 
 

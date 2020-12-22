@@ -16,7 +16,7 @@ export default function LengthSection({track}) {
     const handleTimesTwo = () => {
         if (lengthElement.current.innerHTML < 16) {
             lengthElement.current.innerHTML = lengthElement.current.innerHTML * 2
-            track.numberOfBars = lengthElement.current.innerHTML
+            track.numberOfBars = parseInt(lengthElement.current.innerHTML)
             dispatch({type: 'UPDATE_TRACK', track: track})
         } 
     }
@@ -24,7 +24,7 @@ export default function LengthSection({track}) {
     const handleDevideTwo = () => {
         if (lengthElement.current.innerHTML > 1) {
             lengthElement.current.innerHTML = lengthElement.current.innerHTML / 2
-            track.numberOfBars = lengthElement.current.innerHTML
+            track.numberOfBars = parseInt(lengthElement.current.innerHTML)
             dispatch({type: 'UPDATE_TRACK', track: track})
         }
     }

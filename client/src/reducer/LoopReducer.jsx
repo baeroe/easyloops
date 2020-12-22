@@ -12,13 +12,15 @@ export const LoopReducer = (state, action) => {
                     {
                         trackid: uuid(),
                         trackname: "New Track",
-                        audioBlob: null,
                         numberOfBars: 2,
                         volume: 0.5,
                         treble: 0,
                         middle: 0,
                         bass: 0,
-                        panning: 0
+                        panning: 0,
+                        audio: [
+
+                        ]
                     }
                 ]
             }
@@ -32,13 +34,15 @@ export const LoopReducer = (state, action) => {
                     {
                         trackid: uuid(),
                         trackname: "New Track",
-                        audioBlob: null,
                         numberOfBars: 2,
                         volume: 0.5,
                         treble: 0,
                         middle: 0,
                         bass: 0,
-                        panning: 0
+                        panning: 0,
+                        audio: [
+
+                        ]
                     }
                 ]
             }
