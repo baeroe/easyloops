@@ -25,7 +25,7 @@ mongoose.connect(DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
     .catch(err => console.log(err))
 
 // middleware that the app can read json body data
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 
 // middleware to make api requests possible
 app.use(cors())

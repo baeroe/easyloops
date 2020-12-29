@@ -1,0 +1,11 @@
+@import './variables';
+
+.hover-bg-gray-surface {
+    &:hover {
+        background: $gray-surface;
+    }
+}
+
+.text-overflow-elipsis {
+    text-overflow: ellipsis;
+}

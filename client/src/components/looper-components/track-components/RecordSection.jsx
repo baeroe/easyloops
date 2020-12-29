@@ -5,7 +5,13 @@ import { LooperContext } from '../../../context/LooperContext'
 export default function RecordSection({track, recorder, partRecorder, mergeNode, setTrackLoops, trackLoops, startTime, setStartTime}) {
 
     const [leftAnimation, setLeftAnimation] = useState(null)
+    const leftAnimationRef = useRef(leftAnimation)
+    leftAnimationRef.current = leftAnimation
+
     const [rightAnimation, setRightAnimation] = useState(null)
+    const rightAnimationRef = useRef(rightAnimation)
+    rightAnimationRef.current = rightAnimation
+
 
     const startTimeRef = useRef(startTime)
     startTimeRef.current = startTime
@@ -62,6 +68,16 @@ export default function RecordSection({track, recorder, partRecorder, mergeNode,
         }
     }, [running])
 
+    // set the AudioLoops if the treck has already some
+    useEffect(() => {
+        if (track.audio.length != 0) {
+            track.audio.forEach(audioBlob => {
+                addAudioLoop(audioBlob)
+            }) 
+        }
+
+    }, [])
+
     ///////////////////////////////////
     /// RECORDING FUNCTION ////////////
     ///////////////////////////////////
@@ -96,9 +112,7 @@ export default function RecordSection({track, recorder, partRecorder, mergeNode,
                     addAudioLoop(blob)
 
                     track.audio.push(
-                        {
-                            audioBlob: blob
-                        }
+                        blob
                     )
                     dispatch({type: 'UPDATE_TRACK', track: track})
                 }, TransportTime( track.numberOfBars + 'm' ).toMilliseconds() + getLookAheadInMilli() )
@@ -126,7 +140,7 @@ export default function RecordSection({track, recorder, partRecorder, mergeNode,
     const startRingAnimation = () => {
 
         if (leftRing.current.style.animation == "") {
-            leftRing.current.style.cssText = leftAnimation
+            leftRing.current.style.cssText = leftAnimationRef.current
         } else {
             var newElement
             newElement = leftRing.current.cloneNode(true);
@@ -135,7 +149,7 @@ export default function RecordSection({track, recorder, partRecorder, mergeNode,
         }
 
         if(rightRing.current.style.animation == "") {
-            rightRing.current.style.cssText = rightAnimation
+            rightRing.current.style.cssText = rightAnimationRef.current
         } else {
             newElement = rightRing.current.cloneNode(true);
             rightRing.current.parentNode.replaceChild(newElement, rightRing.current);
@@ -202,6 +216,10 @@ export default function RecordSection({track, recorder, partRecorder, mergeNode,
     }
 
     const getNextLoopStartTime = (startTime) => {
+
+        if (startTime == -1) {
+            return 0
+        }
 
         let current = getCurrentTactStartTime()
         let length = track.numberOfBars * TransportTime('1m')

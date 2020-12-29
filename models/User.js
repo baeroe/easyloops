@@ -2,9 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 TrackSchema = new Schema({
+    trackid: String,
     trackname: String,
-    bars: Number,
-    audioBlob: Buffer,
+    numberOfBars: Number,
+    audio: [String],
+    volume: Number,
     treble: Number,
     middle: Number,
     bass: Number,
@@ -13,6 +15,7 @@ TrackSchema = new Schema({
 })
 
 LoopSchema = new Schema({
+    loopid: String,
     loopname: String,
     bpm: Number,
     tracks: [TrackSchema]

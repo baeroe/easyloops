@@ -1,10 +1,13 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {Transport, Loop, TransportTime, Player, Gain, Volume} from 'tone'
+import ReactTooltip from 'react-tooltip'
 
 import {LooperContext} from './../../context/LooperContext'
 
 import Tick from './../../assets/metronom-1.wav'
 import Tack from './../../assets/metronom-2.wav'
+import MetronomIcon from './../../assets/metronom-icon'
+
 
 
 export default function MetronomSection() {
@@ -62,9 +65,6 @@ export default function MetronomSection() {
         }
 
     }, '4n')
-
-
-    
 
     ///////////////////////////////////
     /// effects ///////////////////////
@@ -130,6 +130,20 @@ export default function MetronomSection() {
         return Transport.getSecondsAtTime(Transport.now())
     }
 
+    const enableBpmChange = () => {
+        if (loop != undefined) {
+            for (let i = 0; i<loop.tracks.length; i++) {
+                if (loop.tracks[i].audio.length != 0) {
+                    return false
+                }
+                else {
+                    return true
+                }
+            }
+        }
+        
+    }
+
 
     ///////////////////////////////////
     /// handler ///////////////////////
@@ -141,7 +155,7 @@ export default function MetronomSection() {
         } else if (e.target.value > MAX_BPM) {
             e.target.value = MAX_BPM
         }
-        dispatch({type: 'UPDATE_LOOP', loopname: loop.loopname, bpm: e.target.value, save: loop.save })
+        dispatch({type: 'UPDATE_LOOP', loopname: loop.loopname, bpm: e.target.value})
     }
 
     const handleMetronomButton = () => {
@@ -164,8 +178,8 @@ export default function MetronomSection() {
             </div>
 
             {/* bpm container */}
-            <div className={`bg-gray-elements rounded-lg py-1 px-2 mr-5 ${running && 'pointer-events-none'}`}>
-                <input className=" bg-transparent text-right text-xl focus:outline-none text-white w-10 h-8 mr-1"
+            <div data-tip data-for="bpm-tip" className={`bg-gray-elements rounded-lg py-1 px-2 mr-5`}>
+                <input className={` bg-transparent text-right text-xl focus:outline-none text-white w-10 h-8 mr-1 ${(running || !enableBpmChange()) && 'pointer-events-none'}`}
                     type="number" 
                     name="bpm" 
                     id="bpm"
@@ -174,12 +188,18 @@ export default function MetronomSection() {
                 <label className="text-white text-xs"
                 htmlFor="bpm">BPM</label>
             </div>
+            {
+                (running || !enableBpmChange()) &&
+                <ReactTooltip id="bpm-tip" type="dark">
+                    You can only change the BPM when the loop is empty and stopped.
+                </ReactTooltip>
+            }
+            
+            
 
             {/* metronom button */}
-            <button onClick={handleMetronomButton} className="bg-gray-elements rounded-lg p-2 text-white mr-5 focus:outline-none">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                </svg>
+            <button onClick={handleMetronomButton} className={` rounded-lg p-2 text-white mr-5 focus:outline-none ${metronomEnabled ? 'bg-easyloops-blue' : 'bg-gray-elements'}`}>
+                <img className="w-6 h-6" src={MetronomIcon} alt="metronom" />
             </button>
         </div>
     )

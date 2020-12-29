@@ -11,7 +11,7 @@ import EQSection from './EQSection'
 import TitleSection from './TitleSection'
 import VolumeSection from './VolumeSection'
 
-export default function Track({track}) {
+export default function Track({track, index}) {
 
     ///////////////////////////////////
     /// variables /////////////////////
@@ -83,7 +83,12 @@ export default function Track({track}) {
         // add event listener that activates the track if user clicks it
         trackElement.current.addEventListener('click', activeTrackListener)  
 
+
+        // when track is closed stop all trackLoops and reset activeTrack
         return () => {
+
+            setActiveTrack(null)
+
             if (trackLoopsRef.current.length != 0) {
                 trackLoopsRef.current.forEach(loop => {
                     loop.stop()
@@ -93,7 +98,6 @@ export default function Track({track}) {
         }
 
     }, [])
-
 
 
     // connect user media to eq 
@@ -160,10 +164,6 @@ export default function Track({track}) {
         volumeNode.volume.setTargetAtTime(value, 0, 0.2)
     }
 
-    const handleMute = (value) => {
-        volumeNode.mute = value
-    }
-
     const handleTrebleChange = (value) => {
         trebleNode.gain.setTargetAtTime(value, 0, 0.2)
     }
@@ -218,12 +218,14 @@ export default function Track({track}) {
 
             <VolumeSection 
                 track={track} 
+                index={index}
                 handleVolumeChange={handleVolumeChange} 
                 startTime={startTime} 
-                handleMute={handleMute}/>
+                trackLoops={trackLoops}/>
 
             <EQSection 
                 track={track} 
+                index={index}
                 handleTrebleChange={handleTrebleChange} 
                 handleMiddleChange={handleMiddleChange} 
                 handleBassChange={handleBassChange} 

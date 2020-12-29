@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useRef} from 'react'
 import { LooperContext } from '../../../context/LooperContext'
+import ReactTooltip from 'react-tooltip'
 
 export default function LengthSection({track, startTime}) {
 
@@ -7,7 +8,7 @@ export default function LengthSection({track, startTime}) {
     const MIN_LENGTH = 1
 
     var lengthElement = useRef(null)
-
+    
     const {
         dispatch
     } = useContext(LooperContext)
@@ -35,20 +36,29 @@ export default function LengthSection({track, startTime}) {
     }
 
     return (
-        /* length */
-        <div className="flex flex-row justify-center w-full flex-grow">
-            <div className=" h-8 bg-gray-elements rounded-l-lg mr-px flex flex-row items-center">
-                <div ref={lengthElement} className="text-white text-right mr-1 w-8 select-none">
-                    
+        <>
+            {/* length */}
+            <div data-tip data-for="length-tip" className="flex flex-row justify-center w-full flex-grow">
+                <div className=" h-8 bg-gray-elements rounded-l-lg mr-px flex flex-row items-center">
+                    <div ref={lengthElement} className="text-white text-right mr-1 w-8 select-none">
+                        
+                    </div>
+                    <label className="text-white text-xs mr-2 select-none">BAR/S</label>
                 </div>
-                <label className="text-white text-xs mr-2 select-none">BAR/S</label>
+                <button onClick={handleTimesTwo} className="w-8 h-8 text-white bg-gray-elements mr-px focus:outline-none select-none">
+                    *2
+                </button>
+                <button onClick={handleDevideTwo} className="w-8 h-8 text-white bg-gray-elements focus:outline-none rounded-r-lg select-none">
+                    /2
+                </button>
             </div>
-            <button onClick={handleTimesTwo} className="w-8 h-8 text-white bg-gray-elements mr-px focus:outline-none select-none">
-                *2
-            </button>
-            <button onClick={handleDevideTwo} className="w-8 h-8 text-white bg-gray-elements focus:outline-none rounded-r-lg select-none">
-                /2
-            </button>
-        </div>
+            {
+                startTime != -1 &&
+                <ReactTooltip id="length-tip" type="dark">
+                    You cannot change the length on a non empty track
+                </ReactTooltip>
+            }
+            
+        </>
     )
 }

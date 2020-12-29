@@ -25,7 +25,7 @@ module.exports = {
                 ] 
             },
             {
-                test: /\.(png|jpe?g|gif|wav)$/i,
+                test: /\.(png|jpe?g|gif|wav|svg)$/i,
                 loader: 'file-loader'
             },
             {
@@ -43,7 +43,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.scss']  
+        extensions: ['.js', '.jsx', '.scss', '.svg']  
     },
     devtool: 'source-map',
     plugins: [

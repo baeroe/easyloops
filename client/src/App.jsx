@@ -19,6 +19,8 @@ import Looper from './components/looper-components/Looper'
 import { UserContext } from './context/UserContext'
 import { LooperContext } from './context/LooperContext'
 
+import LogoSVG from './assets/easyloops-logo'
+
 
 export default function App() {
 
@@ -116,7 +118,10 @@ export default function App() {
                     !looperEntered
                     ?
                     <nav id="navbar" className="grid grid-cols-12 gap-4 h-16 w-full fixed transition-all duration-500">
-                        <div className="col-start-2 col-span-3 text-white">easyloops</div>
+                        <div className="col-start-2 col-span-3 flex flex-row text-white items-center text-2xl">
+                            <img className="w-20 mr-5"src={LogoSVG} alt="easyloops-logo"></img>
+                            <span>easyloops</span>
+                        </div>
                         
                         <div className="col-end-12 col-span-5">
                             <ul className="flex flex-row h-full items-center justify-end">

@@ -3,7 +3,10 @@ import { ToneEvent, Transport, TransportTime } from 'tone'
 import { LooperContext } from '../../../context/LooperContext'
 import Knob from './Knob'
 
-export default function VolumeSection({track, handleVolumeChange, startTime, handleMute}) {
+import PauseIcon from './../../../assets/pause-icon'
+import PlayIcon from './../../../assets/play-icon'
+
+export default function VolumeSection({track, handleVolumeChange, startTime, trackLoops}, index) {
 
     const {
         dispatch
@@ -12,6 +15,9 @@ export default function VolumeSection({track, handleVolumeChange, startTime, han
     const [mute, setMute] = useState(false)
     const muteRef = useRef(mute)
     muteRef.current = mute
+
+    const startTimeRef = useRef(startTime)
+    startTimeRef.current = startTime
 
     var saveTimeout
 
@@ -28,10 +34,20 @@ export default function VolumeSection({track, handleVolumeChange, startTime, han
     }
 
     const handlePause = () => {
-        setMute(curr => !curr)
-        new ToneEvent(() => {
-            handleMute(muteRef.current)
-        }).start(getNextLoopStartTime(startTime))
+
+        setMute(currMute => {
+            if (currMute == false) {
+                trackLoops.forEach((loop) => {
+                    loop.stop()
+                })
+            } else {
+                trackLoops.forEach((loop) => {
+                    loop.start(getNextLoopStartTime(startTimeRef.current))
+                })
+            }
+
+            return !currMute
+        })
     }
 
     const getCurrentTactStartTime = () => {
@@ -48,17 +64,20 @@ export default function VolumeSection({track, handleVolumeChange, startTime, han
     return (
         <div className="flex flex-grow items-center ">
             <div className="flex justify-center items-end">
-                <button onClick={handlePause} className="text-white bg-gray-elements w-12 h-12 rounded-full flex items-center justify-center focus:outline-none mr-6 knob-shadow">
-                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                <button onClick={handlePause} className={`text-white w-12 h-12 rounded-full flex items-center justify-center focus:outline-none mr-6 knob-shadow bg-gray-elements`}>
+                    {
+                        mute ? 
+                            <img className="w-6 h-6" src={PlayIcon} alt="play" />
+                        :
+                            <img className="w-6 h-6" src={PauseIcon} alt="pause" /> 
+                    }
                 </button>
 
                 <div className="flex-col flex justify-center items-center">
                     <label className="text-sm text-white select-none">
                         VOLUME
                     </label>
-                    <Knob minValue={-20} maxValue={20} value={track.volume} setValue={handleVolume}/>
+                    <Knob minValue={-20} maxValue={20} value={track.volume} setValue={handleVolume} index={index} type="volume"/>
                 </div>
             </div>
         </div>

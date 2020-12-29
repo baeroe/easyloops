@@ -15,11 +15,12 @@ export default function TrackContainer() {
             <div className=" overflow-scroll h-screen bg-gray-200 pt-16 pl-16 pb-2">
                 <div className="flex flex-row whitespace-no-wrap h-full">
                     {
-                        loop.tracks.map(track => {
+                        loop.tracks.map((track, index) => {
                             return (
                                 <Track 
                                     key={track.trackid} 
                                     track={track} 
+                                    index={index}
                                 />
                             )
                         })

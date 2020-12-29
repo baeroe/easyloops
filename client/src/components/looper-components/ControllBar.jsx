@@ -1,10 +1,17 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useRef} from 'react'
 import {Transport} from 'tone'
+import axios from 'axios'
+import {clone} from 'ramda'
+import ReactTooltip from 'react-tooltip';
 
 import { LooperContext } from '../../context/LooperContext'
+import { UserContext } from '../../context/UserContext'
 import MetronomSection from './MetronomSection'
 
-export default function ControllBar({user}) {
+import PlayIcon from './../../assets/play-icon'
+import StopIcon from './../../assets/stop-icon'
+
+export default function ControllBar({user, setUser}) {
 
     ///////////////////////////////////
     /// variables & states ////////////
@@ -12,20 +19,41 @@ export default function ControllBar({user}) {
 
     const {
         running,
-        setRunning
+        setRunning,
+        loop,
+        dispatch
     } = useContext(LooperContext)
 
-    var playButton, stopButton
+    const {
+        token
+    } = useContext(UserContext)
+
+    const playButtonRef = useRef(null)
+    const stopButtonRef = useRef(null)
+    const loopNameInputRef = useRef(null)
+
 
     ///////////////////////////////////
     /// effects ///////////////////////
     ///////////////////////////////////
 
-    // get dom elements
     useEffect(() => {
-        playButton = document.getElementById('play-btn') 
-        stopButton = document.getElementById('stop-btn')
+
+        // add eventlistener for enter
+        loopNameInputRef.current.addEventListener('keydown', (e) => {
+            if (e.key === "Enter") {
+                loopNameInputRef.current.blur()
+            }
+        })
+
     }, [])
+
+    useEffect(() => {
+        if (loop != undefined) {
+            loopNameInputRef.current.value = loop.loopname
+        }
+    
+    }, [loop])
 
 
     ///////////////////////////////////
@@ -44,6 +72,83 @@ export default function ControllBar({user}) {
 
     }
 
+    const handleLoopName = (e) => {
+
+        dispatch({type: 'UPDATE_LOOP', loopname: e.target.value, bpm: loop.bpm})
+    }
+
+    const handleSelectLoopName = (e) => {
+        e.target.select()
+    }
+
+    const handleSave = async () => {
+
+        var base64Loop = clone(loop)
+
+        await prepareLoopForSave(base64Loop)
+
+        axios.post('/api/loop', base64Loop).then((res) => {
+            console.log(res)
+            setUser(res.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+
+        // convert base64 to blob
+        // base64Loop.tracks = base64Loop.tracks.map( async (track) => {
+        //     track.audio = track.audio.map( async (audio) => {
+        //         return await base64ToBlob(audio)
+        //     })
+        //     await Promise.all(track.audio).then((value) => {
+        //         track.audio = value
+        //     })
+        //     return track
+        // })
+        // await Promise.all(base64Loop.tracks).then((value) => {
+        //     console.log(value)
+        //     base64Loop.tracks = value
+        // })
+        
+    }
+
+    ///////////////////////////////////
+    /// functions /////////////////////
+    ///////////////////////////////////
+
+    const prepareLoopForSave = async (loop) => {
+        loop.tracks = loop.tracks.map( async (track) => {
+            track.audio = track.audio.map( async (audio) => {
+                let buffer = await audio.arrayBuffer()
+                return arrayBufferToBase64(buffer)
+            })
+            await Promise.all(track.audio).then((value) => {
+                track.audio = value
+            })
+            return track
+        })
+        await Promise.all(loop.tracks).then((value) => {
+            console.log(value)
+            loop.tracks = value
+        })
+        return loop
+    }
+
+    const arrayBufferToBase64 = (buffer) => {
+        let binary = '';
+        let bytes = new Uint8Array(buffer);
+        let len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+
+
+
+ 
+      
+
 
     ///////////////////////////////////
     /// render ////////////////////////
@@ -56,29 +161,33 @@ export default function ControllBar({user}) {
 
             {/* play/stop buttons */}
             <div className="mr-5">
-                <button onClick={handlePlay} id="play-btn" className="bg-gray-elements py-2 px-4 text-white rounded-l-lg mr-px focus:outline-none">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                <button ref={playButtonRef} onClick={handlePlay} id="play-btn" className={`bg-gray-elements py-2 px-4 text-white rounded-l-lg mr-px focus:outline-none`}>
+                    <img className="w-6 h-6"src={PlayIcon} alt="play" />
                 </button>
-                <button onClick={handleStop} id="stop-btn" className="bg-gray-elements py-2 px-4 text-white rounded-r-lg focus:outline-none">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
-                    </svg>
+                <button ref={stopButtonRef} onClick={handleStop} id="stop-btn" className={`bg-gray-elements py-2 px-4 text-white rounded-r-lg mr-px focus:outline-none`}>
+                    <img className="w-6 h-6"src={StopIcon} alt="stop" />
                 </button>
             </div>
 
             {/* save loop container */}
-            <div className="flex flex-row justify-center">
-                <input className="h-10 w-48 text-gray-surface rounded-l-lg pl-2 focus:outline-none focus:shadow-inner hover:shadow-inner transition-shadow duration-500" 
+            <div className="flex flex-row justify-center" data-tip data-for="save-tip">
+
+                <input className={`${token != null ? null : 'pointer-events-none'} h-10 w-48 text-gray-surface rounded-l-lg pl-2 focus:outline-none focus:shadow-inner hover:shadow-inner transition-shadow duration-500`}
                     type="text" 
                     name="name" 
                     id="name"
-                    defaultValue="unnamed"/>
-                <button className="w-12 h-10 bg-easyloops-blue text-white rounded-r-lg text-xs focus:outline-none">save</button>
+                    ref={loopNameInputRef}
+                    onClick={handleSelectLoopName}
+                    onBlur={handleLoopName}/>
+                <button onClick={handleSave} className={`${token != null ? null : 'pointer-events-none'} w-12 h-10 bg-easyloops-blue text-white rounded-r-lg text-xs focus:outline-none`}>save</button>
             </div>
+            {
+                token == null &&
+                <ReactTooltip id="save-tip" type="dark">
+                    You have to be logged in to save your loops
+                </ReactTooltip>
+            }
+            
             
         </div>
     )

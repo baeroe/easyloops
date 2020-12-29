@@ -1,19 +1,20 @@
+import axios from 'axios'
 import {v4 as uuid} from 'uuid'
 
 export const LoopReducer = (state, action) => {
     switch (action.type) {
+        
         case 'CREATE_LOOP':
             state = {
                 loopid: uuid(),
                 loopname: "New Loop",
                 bpm: 120,
-                save: false,
                 tracks: [
                     {
                         trackid: uuid(),
                         trackname: "New Track",
                         numberOfBars: 2,
-                        volume: 0.5,
+                        volume: 0,
                         treble: 0,
                         middle: 0,
                         bass: 0,
@@ -23,6 +24,26 @@ export const LoopReducer = (state, action) => {
                         ]
                     }
                 ]
+            }
+            return state
+
+        case 'LOAD_LOOP':
+            state = {
+                ...action.loop,
+            }
+            return state
+
+        case 'UPDATE_LOOP':
+            state = {
+                ...state,
+                loopname: action.loopname,
+                bpm: action.bpm,
+            }
+            return state
+
+        case 'DECODE_LOOP':
+            state = {
+                ...action.loop
             }
             return state
 
@@ -66,15 +87,6 @@ export const LoopReducer = (state, action) => {
                         return track
                     }
                 })
-            }
-            return state
-
-        case 'UPDATE_LOOP':
-            state = {
-                ...state,
-                loopname: action.loopname,
-                bpm: action.bpm,
-                save: action.save
             }
             return state
 

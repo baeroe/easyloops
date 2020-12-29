@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react'
+import ReactTooltip from 'react-tooltip'
 
-export default function Knob({maxValue, minValue, value, setValue}) {
+export default function Knob({maxValue, minValue, value, setValue, index, type}) {
 
     var knobElement = useRef(null)
     var minAngle = -145
@@ -9,6 +10,8 @@ export default function Knob({maxValue, minValue, value, setValue}) {
     var numberOfValues = (parseFloat(Math.abs(minValue)) + parseFloat(Math.abs(maxValue)))
     // value of one degree
     var step = numberOfValues/numberOfAngles
+
+    const [angle, setAngle] = useState(0)
 
     // for drag controll
     var hold = false
@@ -67,12 +70,13 @@ export default function Knob({maxValue, minValue, value, setValue}) {
             if((value - step) >= minValue) {
                 value = value - step
                 calculateAngleFromValue(value)
+
             }
         }
         setValue(value)
     }
 
-    const setAngle = (angle) => {
+    const rotateKnob = (angle) => {
         knobElement.current.style.cssText = 
             "-moz-transform:rotate("+angle+"deg); " +
             "-webkit-transform:rotate("+angle+"deg); " +
@@ -84,14 +88,29 @@ export default function Knob({maxValue, minValue, value, setValue}) {
     const calculateAngleFromValue = (value) => {
         let angle = (value - (numberOfValues/2) - minValue) / step
         setAngle(angle)
+        rotateKnob(angle)
+    }
+
+    const calculateValueFromAngle = () => {
+        return step * angle + (numberOfValues/2) + minValue
     }
 
     return (
-        <div className="relative">
-            <div ref={knobElement} className="knob w-12 h-12 bg-gray-elements rounded-full knob-shadow">
+        <>
+            <div data-tip data-for={index + type} className="relative">
+                <div ref={knobElement} className="knob w-12 h-12 bg-gray-elements rounded-full knob-shadow">
+                </div>
+                <div className="left-dot absolute rounded-full bg-white"></div>
+                <div className="right-dot absolute rounded-full bg-white"></div>
             </div>
-            <div className="left-dot absolute rounded-full bg-white"></div>
-            <div className="right-dot absolute rounded-full bg-white"></div>
-        </div>
+            <ReactTooltip id={index + type} type="dark" getContent={[() => { 
+                let val = calculateValueFromAngle()
+                if (type != "pan") {
+                    return ( val < 0 ? "": "+" ) + val.toFixed(2) + " dB" 
+                } else {
+                    return ( val < 0 ? "": "+" ) + val.toFixed(2)
+                }
+            }, 100]} />
+        </>
     )
 }

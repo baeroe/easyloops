@@ -2,6 +2,8 @@ import React, {useEffect, useContext, useState} from 'react'
 import { UserContext } from '../../context/UserContext'
 import {LooperContext} from './../../context/LooperContext'
 import axios from 'axios'
+import {clone} from 'ramda'
+
 
 import ControllBar from './ControllBar'
 import SideMenu from './SideMenu'
@@ -14,11 +16,14 @@ export default function Looper() {
         setLooperEntered,
         loop,
         dispatch,
+        sidebar,
+        setSidebar
 
     } = useContext(LooperContext)
     
     const {
-        token
+        token,
+        setToken
     } = useContext(UserContext)
 
     const [user, setUser] = useState(null)
@@ -28,7 +33,14 @@ export default function Looper() {
         setLooperEntered(true)
         return () => {
             setLooperEntered(false)
+            setSidebar(false)
         }
+    }, [])
+
+    // set the token when page is reloaded
+    useEffect(() => {
+        setToken(localStorage.getItem('JWT') || null)
+
     }, [])
 
     // loads userdata if user is logged in
@@ -42,7 +54,7 @@ export default function Looper() {
             axios.get('/api/user')
             .then(response => {
                 //if it work's save user data and store token in the local storage
-                setUser({user: response.data})
+                setUser(response.data)
                 localStorage.setItem('JWT', token)
             })
             .catch(error => {
@@ -53,22 +65,20 @@ export default function Looper() {
                 localStorage.removeItem('JWT')
             })
 
-        } else {
-            localStorage.removeItem('JWT')
-            setUser(null)
-            axios.defaults.headers.common['Authorization'] = ''
         }
 
     }, [token])
 
     useEffect(() => {
         dispatch({type: 'CREATE_LOOP'})
+
     }, [])
+
 
     return (
         <div className="w-full h-full">
-            <ControllBar user={user} />
-            <SideMenu user={user} />
+            <ControllBar user={user} setUser={setUser} />
+            <SideMenu user={user} setUser={setUser}/>
             <TrackContainer />
         </div>
     )
