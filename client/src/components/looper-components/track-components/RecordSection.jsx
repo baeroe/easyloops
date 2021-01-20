@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useState, useContext} from 'react'
-import { Loop, Player, ToneEvent, Transport, TransportTime } from 'tone'
+import { Loop, Player, ToneEvent, Transport, TransportTime, Time } from 'tone'
 import { LooperContext } from '../../../context/LooperContext'
 
 export default function RecordSection({track, recorder, partRecorder, mergeNode, setTrackLoops, trackLoops, startTime, setStartTime}) {
@@ -208,7 +208,7 @@ export default function RecordSection({track, recorder, partRecorder, mergeNode,
     }
 
     const getNextTactStartTime = () => {
-        return (Math.floor(Transport.getSecondsAtTime(Transport.now()) / TransportTime('1m')) + 1) * TransportTime('1m')
+        return Transport.getSecondsAtTime( Time('@1m').toSeconds() )         
     }
 
     const getCurrentTactStartTime = () => {

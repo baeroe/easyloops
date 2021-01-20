@@ -38,30 +38,29 @@ export default function MetronomSection() {
 
     const metronomLoop = new Loop((time) => {
 
-        if ( Math.abs( getCurrentTime() - getCurrentTactStartTime() ) < 0.1 ) {
-            lights[3].classList.remove('active-metronom-light')
-            lights[0].classList.add('active-metronom-light')
-            // console.log('current tact' + getCurrentTactStartTime())
-            playerTick.start(time)
+        let currentPosition = Math.round( ( getCurrentTransportTime() - getCurrentTactStartTransportTime()) / 60 * Transport.bpm.value )
 
-        }
-        else if ( Math.abs( getCurrentTime() - (getCurrentTactStartTime() + TransportTime('4n') ) ) < 0.1 ) {
-            lights[0].classList.remove('active-metronom-light')
-            lights[1].classList.add('active-metronom-light')
-            playerTack.start(time)
-
-        }
-        else if ( Math.abs( getCurrentTime() - (getCurrentTactStartTime() + TransportTime('2n') ) ) < 0.1 ) {
-            lights[1].classList.remove('active-metronom-light')
-            lights[2].classList.add('active-metronom-light')
-            playerTack.start(time)
-
-        }
-        else if ( Math.abs( getCurrentTime() - (getCurrentTactStartTime() + TransportTime('4n') + TransportTime('2n') ) ) < 0.1 ) {
-            lights[2].classList.remove('active-metronom-light')
-            lights[3].classList.add('active-metronom-light')
-            playerTack.start(time)
-
+        switch(currentPosition) {
+            case 0:
+                lights[3].classList.remove('active-metronom-light')
+                lights[0].classList.add('active-metronom-light')
+                playerTick.start(time)
+                break
+            case 1:
+                lights[0].classList.remove('active-metronom-light')
+                lights[1].classList.add('active-metronom-light')
+                playerTack.start(time)
+                break
+            case 2:
+                lights[1].classList.remove('active-metronom-light')
+                lights[2].classList.add('active-metronom-light')
+                playerTack.start(time)
+                break
+            case 3:
+                lights[2].classList.remove('active-metronom-light')
+                lights[3].classList.add('active-metronom-light')
+                playerTack.start(time)
+                break
         }
 
     }, '4n')
@@ -122,11 +121,11 @@ export default function MetronomSection() {
     /// functions /////////////////////
     ///////////////////////////////////
 
-    const getCurrentTactStartTime = () => {
+    const getCurrentTactStartTransportTime = () => {
         return Math.floor(Transport.getSecondsAtTime(Transport.now()) / TransportTime('1m')) * TransportTime('1m')
     }
 
-    const getCurrentTime = () => {
+    const getCurrentTransportTime = () => {
         return Transport.getSecondsAtTime(Transport.now())
     }
 
