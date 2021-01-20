@@ -16,6 +16,8 @@ To build and run the app locally download the repository and run the following c
     cd ..
     npm run start
     
+Be sure that you have nodejs and npm installed!
+    
 Be aware that the login and save function does not work, bc there is no connection to a server. The website has only been tested on chrome and Firefox.
 It is possible that there are some UI Bugs. If some Elements are out of bounds, decrease the zoom level of your browser.
     
