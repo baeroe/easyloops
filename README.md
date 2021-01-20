@@ -6,7 +6,7 @@ You can create any amount of tracks and on each track you can record any amount 
 Thanks to the integrated metronom, the recording process starts on the beginning on the next tact. Just setup the BPM before you start the loop.
 You can mondify the audio signals on each track with an integrated EQ.  
 
-!screenshot(https://github.com/baeroe/easyloops/blob/master/oberfleache.png?raw=true)
+![screenshot](https://github.com/baeroe/easyloops/blob/master/oberfleache.png?raw=true)
 
 To build and run the app locally download the repository and run the following commands in the project folder:
 
